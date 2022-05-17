@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { chakra } from "@chakra-ui/react"
+import { FC } from "react"
+import { Scroll } from "scrollex"
+import { hello } from "./animations/hello"
+import { BoxArtwork } from "./components/BoxArtwork"
+import { BoxEnd } from "./components/BoxEnd"
+import { BoxHello } from "./components/BoxHello"
+import { AnimateFactory } from "./types/animateFactory"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const ScrollSection = chakra(Scroll.Section)
+
+const ScrollContainer = chakra(Scroll.Container)
+
+type Artwork = {
+  id: string
+  animateFactory: AnimateFactory
 }
 
-export default App;
+const artworks: Artwork[] = [
+  { id: "a", animateFactory: hello },
+  { id: "b", animateFactory: hello },
+  { id: "c", animateFactory: hello },
+  { id: "d", animateFactory: hello },
+  { id: "e", animateFactory: hello },
+  { id: "f", animateFactory: hello },
+  { id: "g", animateFactory: hello },
+  { id: "h", animateFactory: hello },
+]
+
+const App: FC = () => {
+  return (
+    <ScrollContainer
+      scrollAxis={"x"}
+      throttleAmount={0}
+      width={"100vw"}
+      height={"100vh"}
+    >
+      <ScrollSection height={"100vh"}>
+        <BoxHello />
+      </ScrollSection>
+      {artworks.map((artwork) => {
+        return (
+          <ScrollSection key={artwork.id} height={"100vh"} mx={8}>
+            <BoxArtwork animateFactory={artwork.animateFactory} />
+          </ScrollSection>
+        )
+      })}
+      <ScrollSection height={"100vh"}>
+        <BoxEnd />
+      </ScrollSection>
+    </ScrollContainer>
+  )
+}
+
+export default App
